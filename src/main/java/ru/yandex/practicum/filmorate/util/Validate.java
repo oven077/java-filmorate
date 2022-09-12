@@ -28,7 +28,7 @@ public abstract class Validate extends UserController {
     }
 
     public static void checkLogin(User user) {
-        if (user.getLogin().isEmpty() || user.getLogin().contains(" ")) {
+        if (user.getLogin()==null || user.getLogin().contains(" ")) {
             log.info("Поле login не по стандарту");
             throw new ValidationException("incorrect login");
         }
