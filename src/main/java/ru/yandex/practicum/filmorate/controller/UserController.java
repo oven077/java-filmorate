@@ -3,29 +3,41 @@ package ru.yandex.practicum.filmorate.controller;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.util.Validate;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+@Validated
 @RestController
+@RequestMapping(
+        consumes = MediaType.ALL_VALUE,
+        produces = MediaType.APPLICATION_JSON_VALUE
+)
 public class UserController {
 
     // создаём логер
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
+
+
     private static HashMap<Integer, User> users = new HashMap<>();
 
     @GetMapping("/users")
-    public static HashMap<Integer, User> getUsers() {
+    public static List<User> returnUsers() {
         // логируем факт получения запроса
         log.info("Получен запрос.");
-        return users;
+        return  new ArrayList<User>(users.values());
     }
 
     @PostMapping("/users")
-    @ResponseStatus(HttpStatus.CREATED)
+    @ResponseStatus(HttpStatus.OK)
     public User createUser(@RequestBody User user) {
 
         if (user.getId() > 0) {
@@ -49,7 +61,6 @@ public class UserController {
         }
 
         users.put(user.getId(), user);
-
         return user;
     }
 
@@ -73,4 +84,8 @@ public class UserController {
         }
         return user;
     }
+    public static HashMap<Integer, User> getUsers() {
+        return users;
+    }
+
 }
