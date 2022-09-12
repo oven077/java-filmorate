@@ -12,6 +12,15 @@ public abstract class ValidateUser extends UserController {
     public static int id = 1;
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
+    public static void globalCheck(User user){
+        checkId(user);
+        checkEmail(user);
+        checkLogin(user);
+        checkBirthDay(user);
+        checkEmptyName(user);
+    }
+
+
     public static boolean findUser(User user) {
         if (getUsers().containsKey(user.getId())) {
             System.out.println("Найден пользователь " + user);
@@ -33,14 +42,14 @@ public abstract class ValidateUser extends UserController {
     }
 
     public static void checkEmail(User user) {
-        if (user.getEmail() == null && !user.getEmail().contains("@")) {
+        if (!user.getEmail().contains("@")) {
             log.info("Поле email не по стандарту");
             throw new ValidationException("incorrect email");
         }
     }
 
     public static void checkLogin(User user) {
-        if (user.getLogin() == null || user.getLogin().contains(" ")) {
+        if (user.getLogin().contains(" ")) {
             log.info("Поле login не по стандарту");
             throw new ValidationException("incorrect login");
         }
