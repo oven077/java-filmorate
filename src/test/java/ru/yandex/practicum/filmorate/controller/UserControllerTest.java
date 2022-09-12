@@ -51,7 +51,7 @@ class UserControllerTest {
                         .content(requestBody)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andDo(MockMvcResultHandlers.print())
-                .andExpect(status().is4xxClientError());
+                .andExpect(status().is5xxServerError());
 
     }
 
