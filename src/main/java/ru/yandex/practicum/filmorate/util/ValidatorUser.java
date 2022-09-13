@@ -78,7 +78,7 @@ public abstract class ValidatorUser extends UserController {
 
     public static void checkEmptyName(User user) {
 
-        if (user.getName() == "") {
+        if (user.getName() == "" || user.getName() == null) {
             user.setName(user.getLogin());
         }
     }
