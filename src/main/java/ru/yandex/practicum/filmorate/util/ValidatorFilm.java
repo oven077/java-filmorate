@@ -9,7 +9,7 @@ import ru.yandex.practicum.filmorate.model.Film;
 
 import java.time.LocalDate;
 
-public abstract class ValidateFilm extends FilmController {
+public abstract class ValidatorFilm extends FilmController {
     public static int id = 1;
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
 
@@ -25,6 +25,16 @@ public abstract class ValidateFilm extends FilmController {
         checkId(film);
         checkReleaseDate(film);
     }
+    public static void globalCheckForUpdate(Film film){
+        checkIdForUpdate(film);
+        checkReleaseDate(film);
+    }
+    public static void checkIdForUpdate(Film film) {
+        if (film.getId() <= 0) {
+            log.info("При обновлении фильма пустой id");
+            throw new ValidationException("incorrect Id for update film");
+        }
+    }
 
     public static void checkId(Film film) {
         if (film.getId() > 0) {
@@ -34,7 +44,7 @@ public abstract class ValidateFilm extends FilmController {
                         ", надо использовать другой метод");
             }
         } else {
-            film.setId(ValidateFilm.generateId());
+            film.setId(ValidatorFilm.generateId());
         }
     }
 
