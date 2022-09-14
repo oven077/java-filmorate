@@ -8,9 +8,32 @@ import ru.yandex.practicum.filmorate.model.User;
 
 import java.time.LocalDate;
 
-public abstract class ValidateUser extends UserController {
+public abstract class ValidatorUser extends UserController {
     public static int id = 1;
     private static final Logger log = LoggerFactory.getLogger(UserController.class);
+
+    public static void globalCheck(User user) {
+        checkId(user);
+        checkEmail(user);
+        checkLogin(user);
+        checkBirthDay(user);
+        checkEmptyName(user);
+    }
+
+    public static void checkForUpdate(User user) {
+        checkIdForUpdate(user);
+        checkEmail(user);
+        checkLogin(user);
+        checkBirthDay(user);
+        checkEmptyName(user);
+    }
+
+    public static void checkIdForUpdate(User user) {
+        if (user.getId() <= 0) {
+            log.info("При обновлении пользователя пустой id");
+            throw new ValidationException("incorrect id for update user");
+        }
+    }
 
     public static boolean findUser(User user) {
         if (getUsers().containsKey(user.getId())) {
@@ -28,19 +51,19 @@ public abstract class ValidateUser extends UserController {
                         ", надо использовать другой метод");
             }
         } else {
-            user.setId(ValidateUser.generateId());
+            user.setId(ValidatorUser.generateId());
         }
     }
 
     public static void checkEmail(User user) {
-        if (user.getEmail() == null && !user.getEmail().contains("@")) {
+        if (!user.getEmail().contains("@")) {
             log.info("Поле email не по стандарту");
             throw new ValidationException("incorrect email");
         }
     }
 
     public static void checkLogin(User user) {
-        if (user.getLogin() == null || user.getLogin().contains(" ")) {
+        if (user.getLogin().contains(" ")) {
             log.info("Поле login не по стандарту");
             throw new ValidationException("incorrect login");
         }
@@ -55,7 +78,7 @@ public abstract class ValidateUser extends UserController {
 
     public static void checkEmptyName(User user) {
 
-        if (user.getName() == null) {
+        if (user.getName() == "" || user.getName() == null) {
             user.setName(user.getLogin());
         }
     }

@@ -1,69 +1,55 @@
 package ru.yandex.practicum.filmorate.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.util.ValidateUser;
+import ru.yandex.practicum.filmorate.util.ValidatorUser;
 
+import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-@Validated
+@Valid
 @RestController
 @RequestMapping(
         consumes = MediaType.ALL_VALUE,
         produces = MediaType.APPLICATION_JSON_VALUE
 )
-public class UserController {
+@Slf4j
 
-    // создаём логер
-    private static final Logger log = LoggerFactory.getLogger(UserController.class);
+public class UserController {
     private static HashMap<Integer, User> users = new HashMap<>();
 
     @GetMapping("/users")
     public static List<User> returnUsers() {
-        // логируем факт получения запроса
-        log.info("Получен запрос.");
-        return  new ArrayList<User>(users.values());
+        log.info("получен список пользователей" + users.values().toString());
+
+        return new ArrayList<User>(users.values());
     }
 
     @PostMapping("/users")
-    public User createUser(@RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
 
-        ValidateUser.checkId(user);
-        ValidateUser.checkEmail(user);
-        ValidateUser.checkLogin(user);
-        ValidateUser.checkBirthDay(user);
-        ValidateUser.checkEmptyName(user);
+        ValidatorUser.globalCheck(user);
 
         users.put(user.getId(), user);
-        log.info("user has added");
+        log.info("user" + user + "was added");
         return user;
     }
 
     @PutMapping("/users")
-    public User updateUser(@RequestBody User user) {
+    public User updateUser(@Valid @RequestBody User user) {
 
-        if (user.getId() <= 0) {
-            log.info("При обновлении пользователя пустой id");
-            throw new ValidationException("incorrect Id for update user");
-        }
+        ValidatorUser.checkForUpdate(user);
 
-        if (ValidateUser.findUser(user)) {
-            ValidateUser.checkEmail(user);
-            ValidateUser.checkLogin(user);
-            ValidateUser.checkBirthDay(user);
-
+        if (ValidatorUser.findUser(user)) {
             users.put(user.getId(), user);
-
         } else {
-           return createUser(user);
+            return createUser(user);
         }
+        log.info("user" + user + " was updated");
         return user;
     }
 
