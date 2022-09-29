@@ -127,8 +127,5 @@ class FilmServiceTest {
 
     }
 
-    @Test
-    void generateId() {
-        assertEquals(2, filmService.generateId(), "создан некорректный id");
-    }
+
 }
