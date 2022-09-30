@@ -25,12 +25,14 @@ public class UserController {
     //get users
     @GetMapping()
     public List<User> returnUsers() {
+        log.info("controller:method userController -> returnUsers");
         return userService.returnUsers();
     }
 
     //get user
     @GetMapping("/{id}")
     public User returnUser(@PathVariable int id) {
+        log.info("controller:method userController -> returnUser");
         return userService.returnUserById(id);
     }
 
@@ -38,6 +40,7 @@ public class UserController {
     //add user
     @PostMapping()
     public User addUser(@Valid @RequestBody User user) {
+        log.info("controller:method userController -> addUser");
         userService.addUser(user);
         return user;
     }
@@ -45,6 +48,7 @@ public class UserController {
     //update user
     @PutMapping()
     public User updateUser(@Valid @RequestBody User user) {
+        log.info("controller:method userController -> updateUser");
         userService.updateUser(user);
         return user;
     }

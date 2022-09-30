@@ -1,5 +1,6 @@
 package ru.yandex.practicum.filmorate.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.model.User;
@@ -12,6 +13,7 @@ import java.util.List;
 
 
 @Service
+@Slf4j
 public class UserService {
 
     private InMemoryUserStorage inMemoryUserStorage;
@@ -39,19 +41,22 @@ public class UserService {
     }
 
     public ArrayList<User> returnUsers() {
+        log.info("Service:method,userService->returnUsers");
         return inMemoryUserStorage.returnUsers();
     }
 
     public User returnUserById(int id) {
+        log.info("Service:method,userService->returnUserById");
         return inMemoryUserStorage.returnUserById(id);
     }
 
     public User addUser(User user) {
+        log.info("Service:method,userService->addUser");
         return inMemoryUserStorage.addUser(user);
     }
 
     public User updateUser(User user) {
-        ValidatorUser.globalCheck(user);
+        log.info("Service:method,userService->updateUser");
         return inMemoryUserStorage.updateUser(user);
     }
 }

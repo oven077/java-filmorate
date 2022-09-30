@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
-@Slf4j
 public abstract class ValidatorUser {
 
     public static void globalCheck(User user) {
@@ -23,21 +22,18 @@ public abstract class ValidatorUser {
 
     public static void checkEmail(User user) {
         if (!user.getEmail().contains("@")) {
-            log.info("Поле email не по стандарту");
             throw new ValidationException("incorrect email");
         }
     }
 
     public static void checkLogin(User user) {
         if (user.getLogin().contains(" ")) {
-            log.info("Поле login не по стандарту");
             throw new ValidationException("incorrect login");
         }
     }
 
     public static void checkBirthDay(User user) {
         if (user.getBirthday().isAfter(LocalDate.now())) {
-            log.info("Поле birthday не по стандарту");
             throw new ValidationException("incorrect birthday");
         }
     }

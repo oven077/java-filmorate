@@ -23,31 +23,38 @@ public class FilmService {
     }
 
     public void addLike(int idFilm, int userId) {
+        log.info("Service:method,filmService->addLike");
         inMemoryFilmStorage.addLike(idFilm, userId);
     }
 
     public void deleteLike(int id, int userId) {
+        log.info("Service:method,filmService->deleteLike");
         inMemoryFilmStorage.deleteLike(id, userId);
     }
 
     public List<Film> returnTopFilms(int count) {
+        log.info("Service:method,filmService->returnTopFilms");
         return inMemoryFilmStorage.returnTopFilms(count);
     }
 
     public Film addFilm(Film film) {
+        log.info("Service:method,filmService->addFilm");
         inMemoryFilmStorage.addFilm(film);
         return film;
     }
 
     public ArrayList<Film> returnFilms() {
+        log.info("Service:method,filmService->returnFilms");
         return new ArrayList<>(inMemoryFilmStorage.getFilms().values());
     }
 
     public Film returnFilmById(int id) {
+        log.info("Service:method,filmService->returnFilmById");
         return inMemoryFilmStorage.returnFilmById(id);
     }
 
     public Film updateFilm(Film film) {
+        log.info("Service:method,filmService->updateFilm");
         inMemoryFilmStorage.updateFilm(film);
         return film;
     }
