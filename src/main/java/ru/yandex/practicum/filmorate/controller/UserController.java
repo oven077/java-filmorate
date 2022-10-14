@@ -1,59 +1,86 @@
 package ru.yandex.practicum.filmorate.controller;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.util.ValidatorUser;
+import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import java.util.ArrayList;
-import java.util.HashMap;
+import javax.validation.constraints.Min;
 import java.util.List;
 
 @Valid
 @RestController
-@RequestMapping(
-        consumes = MediaType.ALL_VALUE,
-        produces = MediaType.APPLICATION_JSON_VALUE
-)
+@RequestMapping("/users")
 @Slf4j
 
 public class UserController {
-    private static HashMap<Integer, User> users = new HashMap<>();
 
-    @GetMapping("/users")
-    public static List<User> returnUsers() {
-        log.info("получен список пользователей" + users.values().toString());
+    private final UserService userService;
 
-        return new ArrayList<User>(users.values());
+    public UserController(UserService userService) {
+        this.userService = userService;
     }
 
-    @PostMapping("/users")
-    public User createUser(@Valid @RequestBody User user) {
+    //get users
+    @GetMapping()
+    public List<User> returnUsers() {
+        log.info("controller:method userController -> returnUsers");
+        return userService.returnUsers();
+    }
 
-        ValidatorUser.globalCheck(user);
+    //get user
+    @GetMapping("/{id}")
+    public User returnUser(@PathVariable int id) {
+        log.info("controller:method userController -> returnUser");
+        return userService.returnUserById(id);
+    }
 
-        users.put(user.getId(), user);
-        log.info("user" + user + "was added");
+
+    //add user
+    @PostMapping()
+    public User addUser(@Valid @RequestBody User user) {
+        log.info("controller:method userController -> addUser");
+        userService.addUser(user);
         return user;
     }
 
-    @PutMapping("/users")
+    //update user
+    @PutMapping()
     public User updateUser(@Valid @RequestBody User user) {
-
-        ValidatorUser.checkForUpdate(user);
-
-        if (ValidatorUser.findUser(user)) {
-            users.put(user.getId(), user);
-        } else {
-            return createUser(user);
-        }
-        log.info("user" + user + " was updated");
+        log.info("controller:method userController -> updateUser");
+        userService.updateUser(user);
         return user;
     }
 
-    public static HashMap<Integer, User> getUsers() {
-        return users;
+    //add user to friend list
+    @PutMapping("/{id}/friends/{friendId}")
+    public void addFilmLike(@PathVariable int id,
+                            @PathVariable int friendId
+    ) {
+        userService.addFriend(id, friendId);
     }
+
+    //user remove friend list
+    @DeleteMapping("/{id}/friends/{friendId}")
+    public void deleteFriendFromList(@PathVariable int id,
+                                     @PathVariable int friendId
+    ) {
+        userService.deleteFromFriendList(id, friendId);
+    }
+
+    //get common friends
+    @GetMapping("/{id}/friends/common/{otherId}")
+    public List<User> popular(@PathVariable int id,
+                              @PathVariable int otherId) {
+        return userService.returnCommonFriends(id, otherId);
+    }
+
+    //get user friends
+    @GetMapping("/{id}/friends")
+    public List<User> returnUserFriends(@PathVariable Integer id) {
+        return userService.returnUserFriends(id);
+    }
+
+
 }
