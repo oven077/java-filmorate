@@ -42,7 +42,7 @@ class UserControllerTest {
     }
 
     @Test
-    void createUser() throws Exception {
+    void createWrongLoginUser() throws Exception {
 
         User user = new User(1, "aa@bb.com", "log in", "name", BIRTHDAY_DATE);
         String requestBody = objectMapper.writeValueAsString(user);
