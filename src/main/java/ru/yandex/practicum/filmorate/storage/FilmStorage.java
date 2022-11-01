@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.film;
+package ru.yandex.practicum.filmorate.storage;
 
 import ru.yandex.practicum.filmorate.model.Film;
 
@@ -9,7 +9,7 @@ public interface FilmStorage {
 
     Film addFilm(Film film);
 
-    ArrayList<Film> returnFilms();
+    List<Film> returnFilms();
 
     Film updateFilm(Film film);
 

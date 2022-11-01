@@ -6,7 +6,6 @@ import ru.yandex.practicum.filmorate.model.User;
 import ru.yandex.practicum.filmorate.service.UserService;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Min;
 import java.util.List;
 
 @Valid
@@ -41,8 +40,8 @@ public class UserController {
     @PostMapping()
     public User addUser(@Valid @RequestBody User user) {
         log.info("controller:method userController -> addUser");
-        userService.addUser(user);
-        return user;
+//        userService.addUser(user);
+        return userService.addUser(user);
     }
 
     //update user
@@ -55,8 +54,8 @@ public class UserController {
 
     //add user to friend list
     @PutMapping("/{id}/friends/{friendId}")
-    public void addFilmLike(@PathVariable int id,
-                            @PathVariable int friendId
+    public void addFriend(@PathVariable int id,
+                          @PathVariable int friendId
     ) {
         userService.addFriend(id, friendId);
     }
@@ -74,6 +73,7 @@ public class UserController {
     public List<User> popular(@PathVariable int id,
                               @PathVariable int otherId) {
         return userService.returnCommonFriends(id, otherId);
+
     }
 
     //get user friends

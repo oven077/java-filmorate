@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.user;
+package ru.yandex.practicum.filmorate.storage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -42,7 +42,7 @@ public class InMemoryUserStorage implements UserStorage {
     }
 
     @Override
-    public ArrayList<User> returnUsers() {
+    public List<User> returnUsers() {
         log.info("Вернули список пользователей" + new ArrayList<>(users.values()));
         return new ArrayList<>(users.values());
     }
@@ -53,7 +53,7 @@ public class InMemoryUserStorage implements UserStorage {
         if (findUser(user)) {
             users.put(user.getId(), user);
         } else {
-            return addUser(user);
+            addUser(user);
         }
         return user;
     }

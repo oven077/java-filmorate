@@ -1,12 +1,15 @@
+/*
 package ru.yandex.practicum.filmorate.service;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.jdbc.core.JdbcTemplate;
+import ru.yandex.practicum.filmorate.impl.UserDaoImpl;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.film.InMemoryFilmStorage;
-import ru.yandex.practicum.filmorate.storage.user.InMemoryUserStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryFilmStorage;
+import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 
 import java.time.LocalDate;
 
@@ -21,12 +24,20 @@ class FilmServiceTest {
     private InMemoryFilmStorage inMemoryFilmStorage;
     private InMemoryUserStorage inMemoryUserStorage;
 
+    private JdbcTemplate jdbcTemplate;
+
     @BeforeEach
     void setUp() {
 
 
-        inMemoryUserStorage = new InMemoryUserStorage();
-        userService = new UserService(inMemoryUserStorage);
+        //inMemoryUserStorage = new InMemoryUserStorage();
+
+        jdbcTemplate = new JdbcTemplate();
+
+
+        UserDaoImpl userDaoImpl = new UserDaoImpl(jdbcTemplate);
+
+        userService = new UserService(userDaoImpl);
 
         inMemoryFilmStorage = new InMemoryFilmStorage(userService);
         filmService = new FilmService(inMemoryFilmStorage);
@@ -129,3 +140,4 @@ class FilmServiceTest {
 
 
 }
+*/

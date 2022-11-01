@@ -30,7 +30,7 @@ public class FilmController {
         return filmService.returnFilms();
     }
 
-    //пet film by id
+    //get film by id
     @GetMapping("/{id}")
     public Film returnFilmById(@PathVariable @Min(1) Integer id) {
         log.info("controller:method FilmController -> returnFilmById");

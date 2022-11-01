@@ -1,4 +1,4 @@
-package ru.yandex.practicum.filmorate.storage.film;
+package ru.yandex.practicum.filmorate.storage;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -11,7 +11,6 @@ import ru.yandex.practicum.filmorate.exceptions.ValidationException;
 import ru.yandex.practicum.filmorate.model.Film;
 import ru.yandex.practicum.filmorate.service.UserService;
 import ru.yandex.practicum.filmorate.util.ValidatorFilm;
-import ru.yandex.practicum.filmorate.util.ValidatorUser;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -89,10 +88,6 @@ public class InMemoryFilmStorage implements FilmStorage {
     @Override
     public void deleteLike(int id, int userId) {
         checkId(id);
-        if (userService.returnUserById(userId) == null) {
-            throw new BadRequestException("Пользователь с id " + id + " не найден");
-        }
-
 
         if (returnFilmById(id) != null) {
             returnFilmById(id)
