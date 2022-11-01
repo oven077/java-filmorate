@@ -23,14 +23,8 @@ import java.util.stream.Collectors;
 @Slf4j
 public class InMemoryFilmStorage implements FilmStorage {
 
-    private final UserService userService;
     public HashMap<Integer, Film> films = new HashMap<>();
     private static int id = 0;
-
-    @Autowired
-    public InMemoryFilmStorage(UserService userService) {
-        this.userService = userService;
-    }
 
     @Override
     public Film addFilm(Film film) {

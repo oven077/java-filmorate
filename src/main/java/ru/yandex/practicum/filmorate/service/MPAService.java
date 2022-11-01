@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.exceptions.BadRequestException;
 import ru.yandex.practicum.filmorate.impl.MPADaoImpl;
 import ru.yandex.practicum.filmorate.model.MPA;
+import ru.yandex.practicum.filmorate.storage.MPAStorage;
 
 import java.util.List;
 
@@ -13,22 +14,22 @@ import java.util.List;
 @Slf4j
 public class MPAService {
 
-    private MPADaoImpl mpaDao;
+    private final MPAStorage mpaStorage;
 
 
-    public MPAService(MPADaoImpl mpaDao) {
-        this.mpaDao = mpaDao;
+    public MPAService(MPAStorage mpaStorage) {
+        this.mpaStorage = mpaStorage;
     }
 
     public MPA returnMPA(int id) {
         log.info("Service:method,MPAService->returnMPA");
         checkId(id);
-        return mpaDao.returnMPAById(id);
+        return mpaStorage.returnMPAById(id);
     }
 
     public List<MPA> returnMPAs() {
         log.info("Service:method,MPAService->returnMPAs");
-        return mpaDao.returnMPAs();
+        return mpaStorage.returnMPAs();
     }
 
     public static void checkId(int id) {

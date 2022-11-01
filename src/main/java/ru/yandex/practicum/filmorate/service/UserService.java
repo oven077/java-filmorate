@@ -2,14 +2,13 @@ package ru.yandex.practicum.filmorate.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import ru.yandex.practicum.filmorate.impl.UserDaoImpl;
 import ru.yandex.practicum.filmorate.model.User;
-import ru.yandex.practicum.filmorate.storage.InMemoryUserStorage;
 import ru.yandex.practicum.filmorate.storage.UserStorage;
 import ru.yandex.practicum.filmorate.util.ValidatorUser;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -17,51 +16,53 @@ import java.util.List;
 @Slf4j
 public class UserService {
 
-    private UserDaoImpl userDao;
+
+    private final UserStorage userStorage;
+
 
     @Autowired
-    public UserService(UserDaoImpl userDao) {
-        this.userDao = userDao;
+    public UserService(@Qualifier("userDaoImpl") UserStorage userStorage) {
+        this.userStorage = userStorage;
     }
     public void addFriend(int id, int friendId) {
         log.info("Service:method,userService->addFriend");
-        userDao.addFriend(id, friendId);
+        userStorage.addFriend(id, friendId);
     }
 
     public void deleteFromFriendList(int id, int userId) {
         log.info("Service:method,userService->deleteFromFriendList");
-        userDao.deleteFromFriendList(id, userId);
+        userStorage.deleteFromFriendList(id, userId);
     }
 
     public List<User> returnCommonFriends(int id, int otherId) {
         log.info("Service:method,userService->returnCommonFriends");
-        return userDao.returnCommonFriends(id, otherId);
+        return userStorage.returnCommonFriends(id, otherId);
     }
 
     public List<User> returnUserFriends(int id) {
         log.info("Service:method,userService->returnUserFriends");
-        return userDao.returnFriendsUser(id);
+        return userStorage.returnFriendsUser(id);
     }
 
     public List<User> returnUsers() {
         log.info("Service:method,userService->returnUsers");
-        return userDao.returnUsers();
+        return userStorage.returnUsers();
     }
 
     public User returnUserById(int id) {
         log.info("Service:method,userService->returnUserById");
-        return userDao.returnUserById(id);
+        return userStorage.returnUserById(id);
     }
 
     public User addUser(User user) {
         log.info("Service:method,userService->addUser");
         ValidatorUser.globalCheck(user);
-        return userDao.addUser(user);
+        return userStorage.addUser(user);
     }
 
     public User updateUser(User user) {
         log.info("Service:method,userService->updateUser");
         ValidatorUser.globalCheck(user);
-        return userDao.updateUser(user);
+        return userStorage.updateUser(user);
     }
 }
